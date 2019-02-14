@@ -25,7 +25,7 @@ class CategoryController extends Controller
          return view('category.tree', compact('category','subcategory','item'));
    }
   public function category_data() {
-      $category = Category::select('id','category')->get();
+      $category = Category::select('id','category')->where('parent_id',Auth::User()->id)->get();
        return Datatables::of($category)->addIndexColumn()->addColumn('action', function ($category) {
                     return '<a href="#edit" id="edit_category" title="Edit"  class="btn btn-sm btn-info margin-left-5" data-id="' . $category->id . '"  data-target="#edit" data-toggle="modal" > EDIT</a> &nbsp;'
                             . '<a href="#delete"  title="Delete" data-target="#delete"  data-toggle="modal"  data-id="' . $category->id . '" id="delete_category" category-name="'.$category->category.'" class="btn btn-sm btn-danger margin-left-5"> DELETE</a>';
