@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Category;
 use App\Subcategory;
 use App\User;
+use App\Item;
 use DataTables;
 use DB;
 use Auth;
@@ -57,6 +58,7 @@ class SubcategoryController extends Controller
 
    public function delete($id) {
          $subcategory=Subcategory::where('id',$id)->get();
+         Item::where('subcategory_id', $id)->delete();
          Subcategory::findOrFail($id)->delete();
          return response()->json([
                      'status' => 'success',
