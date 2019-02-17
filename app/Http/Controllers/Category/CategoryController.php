@@ -62,7 +62,14 @@ class CategoryController extends Controller
    }
 
    public function delete($id) {
+         $sub_ids = array();
          $category=Category::where('id',$id)->get();
+         $sub_cat = Subcategory::where('category_id', $id)->get();
+         foreach ($sub_cat as $value) {
+           $sub_ids[] = $value['id'];
+         }
+         Item::whereIn('subcategory_id',$sub_ids)->delete();
+         Subcategory::where('category_id', $id)->delete();
          Category::findOrFail($id)->delete();
          return response()->json([
                      'status' => 'success',
